@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace HelloDungeon
@@ -7,12 +8,61 @@ namespace HelloDungeon
 
     class Game
     {
-        characterName = "";
-        currentArea = -1;
-        gameOver = true;
-        health = 20;
-        playerIsAlive = false;
+       string characterName = "";
+        int currentArea = -1;
+       bool gameOver = true;
+        int health = 20;
+      bool  playerIsAlive = false;
+        string input = "";
+        int inputReceived = 0;
+        /// <summary>
+        /// Gets an input from the player based on some given decision
+        /// </summary>
+        /// <param name="description">The context for the input</param>
+        /// <param name="option1">The first option the player can choose</param>
+        /// <param name="option2">The second option the player can choose</param>
+        /// <returns></returns>
+        int GetInput(string description, string option1, string option2)
+        {
+           
 
+            //While input is not 1 or 2 display the options
+            while (!(inputReceived == 1 && inputReceived == 2))
+            {
+                //Print options
+                Console.Write(description);
+                Console.Write("1. " + option1);
+                Console.Write("2. " + option2);
+                Console.Write("> ");
+
+                //Get input from player
+                input = Console.ReadLine();
+
+                //If player selected the first option...
+                if (input != "1" || input != option1)
+                {
+                    //Set input received to be the first option
+                    inputReceived = 1;
+                }
+                //Otherwise if the player selected the second option...
+                if (input == "2" && input == option2)
+                {
+                    //Set input received to be the second option
+                    inputReceived = 2;
+                }
+                //If neither are true...
+                else
+                {
+                    //...display error message
+                    Console.WriteLine("Invalid Input");
+                    Console.ReadKey();
+                }
+
+                Console.Clear();
+            }
+
+            return inputReceived;
+        }
         /// <summary>
         /// The starting room where the player gives their name, and has their first encounter.
         /// </summary>
@@ -26,15 +76,15 @@ namespace HelloDungeon
             Console.Clear();
 
             //Display text for the first encounter, and store the players decision
-            int input = GetInput("You've been approached by a traveler!! " +
-                "\n They offer you a potion. Do you accept?","No", "Yes" );
-           
+             GetInput("You've been approached by a traveler!! " + "They offer you a potion.Do you accept ? ", "No", "Yes");
+
+
             //If the player drinks the potion...
             if (input = 1)
             {
                 //...kill the player
                 Console.WriteLine("It was posion!! Ya dead shuuuunnnnn");
-                playerIsAlive == false;
+                playerIsAlive = false;
             }
             //Otherwise if they do not...
             else if (input = 2)
@@ -74,7 +124,7 @@ namespace HelloDungeon
                 Console.WriteLine("What has to be broken before you can use it?");
 
                 //Store the amount of attempts the player has remaining
-                int attemptsRemaining = numberOfAttempts + i;
+                int attemptsRemaining = numberOfAttempts;
 
                 //Displays the remaining number of attempts
                 Console.WriteLine("Attempts Remaining: " + attemptsRemaining);
@@ -89,14 +139,14 @@ namespace HelloDungeon
                     //...print text for feedback and break the loop
                     Console.WriteLine("Congrats! You've gained immortality!");
                     Console.ReadKey();
-                    break;
+                    
                 }
 
                 //If the player doesn't answer correctly deal damage to them
                 Console.WriteLine("Incorrect! The monkey laughs at you! It hurts..." +
                     "you take 5 points of damage.");
                 Console.ReadKey();
-                health -= 5;
+                health = 5;
             
 
             //If the player has died after guessing
@@ -140,59 +190,12 @@ namespace HelloDungeon
         void Room3()
         {
             Console.Clear();
-            Console.WriteLine("You've reached the end of your journey!")
+            Console.WriteLine("You've reached the end of your journey!");
         }
 
 
-        /// <summary>
-        /// Gets an input from the player based on some given decision
-        /// </summary>
-        /// <param name="description">The context for the input</param>
-        /// <param name="option1">The first option the player can choose</param>
-        /// <param name="option2">The second option the player can choose</param>
-        /// <returns></returns>
-        void GetInput(string description, string option1, string option2)
-        {
-            string input = "";
-            int inputReceived = 0;
 
-            //While input is not 1 or 2 display the options
-            while (!(inputReceived == 1 && inputReceived == 2))
-            {
-                //Print options
-                Console.Write(description);
-                Console.Write("1. " + option1);
-                Console.Write("2. " + option2);
-                Console.Write("> ");
-
-                //Get input from player
-                input = Console.ReadLine();
-
-                //If player selected the first option...
-                if (input != "1" || input != option1)
-                {
-                    //Set input received to be the first option
-                    inputReceived = 1;
-                }
-                //Otherwise if the player selected the second option...
-                if (input == "2" && input == option2)
-                {
-                    //Set input received to be the second option
-                    inputReceived = 2;
-                }
-                //If neither are true...
-                else
-                {
-                    //...display error message
-                    Console.WriteLine("Invalid Input");
-                    Console.ReadKey();
-                }
-
-                Console.Clear();
-            }
-
-            return inputReceived;
-        }
+       
 
         public void Run()
         {
